@@ -10,19 +10,31 @@ using stock_quote_alert.intefaces;
 
 namespace stock_quote_alert.classes
 {
+    /// <summary>
+    /// Allows to check the quotes prices using API calls. Implements the IObservable interface for the observer pattern.
+    /// </summary>
     internal class StockObserver : IObservable
     {
         private string key;
-        private int sleepTime = 30000; // 900000
+        private int sleepTime = 900000; // 900000 milisecond = 15 minutes
 
-        private List<IObserver> obsList = new List<IObserver> ();
+        private List<IObserver> obsList = new List<IObserver> (); // Allow multiple obervers for this class
+        
+        private List<Stock> stocksAlert = new List<Stock>(); // This list is useful to not alerting twice about the same stock
 
-        private List<Stock> stocksAlert = new List<Stock>();
+        /// <summary>
+        /// Initializes an instance of StockObserver. Needs a valid key of the HG Brasil finance API.
+        /// </summary>
+        /// <param name="key"></param>
         public StockObserver(string key)
         {
             this.key = key;
         }
-
+        /// <summary>
+        /// Checks the price of the stock in the parameters every 15 minutes and alert the obervers when the stock price is over or under its referece prices.
+        /// </summary>
+        /// <param name="stock"></param>
+        /// <returns></returns>
         public async Task CheckQuotes(Stock stock)
         {
             string QUERY_URL = string.Format("https://api.hgbrasil.com/finance/stock_price?key={0}&symbol={1}", this.key, stock.symbol);
@@ -72,20 +84,36 @@ namespace stock_quote_alert.classes
             }
         }
 
+        /// <summary>
+        /// Returns the last stock added in the StockObserver.stocksAlert list
+        /// </summary>
+        /// <returns></returns>
         public Stock GetLastStock()
         {
             return this.stocksAlert.Last();
         }
 
+        /// <summary>
+        /// Add a new stock in StockObserver.stocksAlert list
+        /// </summary>
+        /// <param name="observer"></param>
         public void Add(IObserver observer)
         {
             this.obsList.Add(observer);
         }
 
+        /// <summary>
+        /// Remove the stock in the parameters from StockObserver.stocksAlert list
+        /// </summary>
+        /// <param name="observer"></param>
         public void Remove(IObserver observer)
         {
             this.obsList.Remove(observer);
         }
+
+        /// <summary>
+        /// Call the IObserver.Update() for every observer in StockObserver.obsList. This method is part of the Oberver pattern
+        /// </summary>
         public void Notify()
         {
             foreach (IObserver observer in obsList)

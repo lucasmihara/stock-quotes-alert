@@ -10,6 +10,9 @@ using stock_quote_alert.intefaces;
 
 namespace stock_quote_alert.classes
 {
+    /// <summary>
+    /// Allows to send email by using SMTP observing an instance of StockObserver. Implements the IObserver interface for the observer pattern.
+    /// </summary>
     internal class MailSender : IObserver
     {
         private List<string> to = new List<string>();
@@ -23,6 +26,16 @@ namespace stock_quote_alert.classes
         public string password { get; set; }
         public string name { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of MailSender, takes all the configuration of the STMP server and an instance of StockObsever
+        /// </summary>
+        /// <param name="stockObserver">aa</param>
+        /// <param name="host"></param>
+        /// <param name="port"></param>
+        /// <param name="enableSsl"></param>
+        /// <param name="from"></param>
+        /// <param name="password"></param>
+        /// <param name="name"></param>
         public MailSender(StockObserver stockObserver, string host, int port, bool enableSsl, string from, string password, string name = "")
         {
             this.stockObserver = stockObserver;
@@ -33,6 +46,7 @@ namespace stock_quote_alert.classes
             this.password = password;
             this.name = name;
 
+            // Setting the SMTP client up
             this.smtp = new SmtpClient
             {
                 Host = host,
@@ -48,11 +62,16 @@ namespace stock_quote_alert.classes
             Console.WriteLine("Email will try to be sent as {0}", this.from);
         }
 
+        /// <summary>
+        /// Send an email about the stock to every recipient in MailSender.to parameter 
+        /// </summary>
+        /// <param name="stock"></param>
         void SendEmail(Stock stock)
         {
             string condition;
             double referencePrice;
 
+            // Customizing the message
             if(stock.currPrice < stock.buyPrice)
             {
                 condition = "under";
@@ -63,11 +82,12 @@ namespace stock_quote_alert.classes
                 condition = "over";
                 referencePrice = stock.sellPrice;
             }
+
             try
             {
                 foreach (string s in to)
                 {
-
+                    // Send the email
                     var email = Email
                         .From(this.from, this.name)
                         .To(s)
@@ -93,12 +113,18 @@ namespace stock_quote_alert.classes
 
 
         }
-
+        /// <summary>
+        /// Add a new email to MailSender.to parameter which will be recipients to SendEmail() method
+        /// </summary>
+        /// <param name="email"></param>
         public void AddTo(string email)
         {
             this.to.Add(email);
         }
 
+        /// <summary>
+        /// Send an email about the last stock added in the stockObserver.stocksAlert list. This method must be called everytime StockOberver detects a stock price under or over the referece prices. Part of Observable pattern.
+        /// </summary>
         public void Update()
         {
             this.SendEmail(this.stockObserver.GetLastStock());

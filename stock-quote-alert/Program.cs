@@ -105,6 +105,9 @@ namespace stock_quote_alert
             return;
         }
 
+        /// <summary>
+        /// Check for existance of the recipient emails file and creates it if it doesn't exist
+        /// </summary>
         private static void SetEmail()
         {
             string filename = "emails.txt";
@@ -115,6 +118,9 @@ namespace stock_quote_alert
             System.Diagnostics.Process.Start(filename);
         }
 
+        /// <summary>
+        /// Check for existance of the configuration file and creates it if it doesn't exist
+        /// </summary>
         private static void SetConfig()
         {
             string filename = "config.json";
@@ -125,6 +131,9 @@ namespace stock_quote_alert
             System.Diagnostics.Process.Start(filename);
         }
 
+        /// <summary>
+        /// Create the configuration file 
+        /// </summary>
         private static void CreateConfig()
         {
             string filename = "config.json";
@@ -141,6 +150,10 @@ namespace stock_quote_alert
             File.WriteAllText(filename, json.ToString());
         }
 
+        /// <summary>
+        /// Read the configuration file and check if it's on the right format
+        /// </summary>
+        /// <returns>A JObject containing the informations in the config.json file</returns>
         private static JObject ReadConfig()
         {
             string filename = "config.json";
@@ -181,6 +194,10 @@ namespace stock_quote_alert
             }
         }
 
+        /// <summary>
+        /// Read the recipient emails file and check if it's not empty
+        /// </summary>
+        /// <returns>A List containing the recipient emails in the emails.txt file</returns>
         private static List<string> ReadEmails()
         {
             string filename = "emails.txt";
