@@ -20,7 +20,7 @@ namespace stock_quote_alert
                     SetConfig();
                     return;
                 }
-                else if(args[0] == "email")
+                else if(args[0] == "emails")
                 {
                     SetEmail();
                     return;
@@ -46,6 +46,12 @@ namespace stock_quote_alert
             catch (Exception ex)
             {
                 Console.WriteLine("Error at getting prices.");
+                return;
+            }
+
+            if(buyPrice > sellPrice)
+            {
+                Console.WriteLine("Buy price is higher than sell price.");
                 return;
             }
 
