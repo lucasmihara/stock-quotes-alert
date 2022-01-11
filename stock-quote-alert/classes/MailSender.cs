@@ -17,7 +17,7 @@ namespace stock_quote_alert.classes
     {
         private List<string> to = new List<string>();
         private SmtpClient smtp;
-        private StockObserver stockObserver;
+        private StockObservable stockObserver;
 
         public string host { get; set; }
         public int port { get; set; }
@@ -36,7 +36,7 @@ namespace stock_quote_alert.classes
         /// <param name="from"></param>
         /// <param name="password"></param>
         /// <param name="name"></param>
-        public MailSender(StockObserver stockObserver, string host, int port, bool enableSsl, string from, string password, string name = "")
+        public MailSender(StockObservable stockObserver, string host, int port, bool enableSsl, string from, string password, string name = "")
         {
             this.stockObserver = stockObserver;
             this.host = host;

@@ -13,10 +13,10 @@ namespace stock_quote_alert.classes
     /// <summary>
     /// Allows to check the quotes prices using API calls. Implements the IObservable interface for the observer pattern.
     /// </summary>
-    internal class StockObserver : IObservable
+    internal class StockObservable : IObservable
     {
         private string key;
-        private int sleepTime = 900000; // 900000 milisecond = 15 minutes
+        private readonly int sleepTime = 900000; // 900000 milisecond = 15 minutes
 
         private List<IObserver> obsList = new List<IObserver> (); // Allow multiple obervers for this class
         
@@ -26,10 +26,12 @@ namespace stock_quote_alert.classes
         /// Initializes an instance of StockObserver. Needs a valid key of the HG Brasil finance API.
         /// </summary>
         /// <param name="key"></param>
-        public StockObserver(string key)
+        public StockObservable(string key)
         {
             this.key = key;
         }
+
+
         /// <summary>
         /// Checks the price of the stock in the parameters every 15 minutes and alert the obervers when the stock price is over or under its referece prices.
         /// </summary>

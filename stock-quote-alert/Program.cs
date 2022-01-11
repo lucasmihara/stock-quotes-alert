@@ -94,7 +94,7 @@ namespace stock_quote_alert
                 return;
             }
 
-            StockObserver stockObserver = new StockObserver(key);
+            StockObservable stockObserver = new StockObservable(key);
             MailSender mailSender = new MailSender(stockObserver, host, port, enableSsl, from, password, name);
 
             stockObserver.Add(mailSender);

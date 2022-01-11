@@ -72,7 +72,7 @@
   <ItemGroup>
     <Compile Include="classes\MailSender.cs" />
     <Compile Include="classes\Stock.cs" />
-    <Compile Include="classes\StockObserver.cs" />
+    <Compile Include="classes\StockObservable.cs" />
     <Compile Include="intefaces\IObserver.cs" />
     <Compile Include="intefaces\IObservable.cs" />
     <Compile Include="Program.cs" />
